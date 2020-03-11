@@ -20,7 +20,7 @@ var gameWinners = [
     [0, 4, 8],
     [2, 4, 6]
 ];
-
+state = 0;
 
 // init function creates title, board, and I want it to create my status bar.
 function init() {
@@ -57,14 +57,18 @@ function createBoard() {
             let column = document.createElement("div"); //create a new column through each iteration
             column.className = "col-4 border"; //sets new column class name to "column"=
             column.id = k;
-            column.onclick = clickSquare;  // assign the function to the click
+            column.addEventListener("click",clickSquare);  // assign the function to the click
+            column.removeEventListener("click", clickSquare, true); 
+            
             row.appendChild(column); //appends child column to parent row
             k++;
+        
+
         }
+        
         container.appendChild(row);    //appends child row to parent container.
     }
     document.body.appendChild(container);  //appends container to parent body.
-
 }
 
 function clickSquare(e) {
@@ -76,6 +80,9 @@ function clickSquare(e) {
     console.log(turn);
     clicks++;  // adding the clicks
     e.target.innerHTML = turns[Number(turn)]; // updating the view
+   // ???????????????? column.removeEventListener("click", clickSquare, true); ???????????//
+TODO: //I need to make square unclickable after click. e.target false? 
+     
 
     //how do I store each click in my state? store clicks into an array. 
     clickData[e.target.id] = Number(turn) + 1; // setting the state of the clickData
@@ -97,7 +104,7 @@ function checkForWinner() {
     // if all of the values = 3, x wins
     // if all of the values total 6, 0 wins
 
-    // if num of clicks == 8 and no winners, it is a draw
+    //if num of clicks == 8 and no winners, it is a draw
     var condition = null;
     for (var i = 0; i < gameWinners.length; i++) {
 
@@ -125,7 +132,7 @@ function checkForWinner() {
         }
     }
 
-    if (condition == null && clicks != 8) {
+    if (condition == null && clicks == 9) {
         gameInfo.innerText= "Tie game!"  // we have a tie
     }
 }
@@ -140,7 +147,7 @@ function createStatusBar() {
     statusRow.className = "row ";
     let statusCol = document.createElement("div");
     var startBtn = document.createElement("button");
-    startBtn.className = "btn btn-secondary btn-lg  font-weight-bold display-1";
+    startBtn.className = "btn btn-secondary btn-lg font-weight-bold m-5";
     startBtn.id = "startGame";
     startBtn.innerHTML = "Reset Game";
     statusCol.id = "startGame";
@@ -161,11 +168,11 @@ function createStatusBar() {
     statusBar.appendChild(statusRow);
     document.body.appendChild(statusBar);
 }
-startBtn.onClick= resetGame;
-function resetGame () {
-
-    init()
-}
+//startBtn.onClick= resetGame;
+/*function resetGame () {
+state=0;
+    init() 
+} */
 
 
 
