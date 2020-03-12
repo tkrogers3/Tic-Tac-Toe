@@ -6,6 +6,7 @@
      element.innerHTML=htmlText;
 return element;
 } */
+var state = 0;
 var turn = true;
 var clicks = 0;
 var turns = ["X", "0"];
@@ -20,7 +21,7 @@ var gameWinners = [
     [0, 4, 8],
     [2, 4, 6]
 ];
-state = 0;
+
 
 // init function creates title, board, and I want it to create my status bar.
 function init() {
@@ -58,18 +59,21 @@ function createBoard() {
             column.className = "col-4 border"; //sets new column class name to "column"=
             column.id = k;
             column.addEventListener("click",clickSquare);  // assign the function to the click
-            column.removeEventListener("click", clickSquare, true); 
+            
+            console.log(clickSquare.useCapture);
             
             row.appendChild(column); //appends child column to parent row
             k++;
         
-
+           
         }
-        
+       
         container.appendChild(row);    //appends child row to parent container.
     }
     document.body.appendChild(container);  //appends container to parent body.
 }
+
+
 
 function clickSquare(e) {
     // passes the event as e, automatically for any event 
@@ -80,8 +84,8 @@ function clickSquare(e) {
     console.log(turn);
     clicks++;  // adding the clicks
     e.target.innerHTML = turns[Number(turn)]; // updating the view
-   // ???????????????? column.removeEventListener("click", clickSquare, true); ???????????//
-TODO: //I need to make square unclickable after click. e.target false? 
+    e.target.removeEventListener("click", clickSquare); 
+     //I need to make square unclickable after click. e.target false? 
      
 
     //how do I store each click in my state? store clicks into an array. 
@@ -122,11 +126,17 @@ function checkForWinner() {
             if (total == 3) {
                 gameInfo.innerText= "Player 1 wins!"
                 condition = 1;  // x
+                console.log(gameInfo);
+                        //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
+                        turn= false
             }
 
             if (total == 6) {
                 gameInfo.innerText= "Player 2 wins!"
                 condition = 2; // 0
+              console.log(gameInfo);
+              //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
+              turn =  false;
             }
 
         }
@@ -134,6 +144,8 @@ function checkForWinner() {
 
     if (condition == null && clicks == 9) {
         gameInfo.innerText= "Tie game!"  // we have a tie
+        
+        turn= false
     }
 }
 
@@ -146,49 +158,52 @@ function createStatusBar() {
     let statusRow = document.createElement("div");
     statusRow.className = "row ";
     let statusCol = document.createElement("div");
-    var startBtn = document.createElement("button");
-    startBtn.className = "btn btn-secondary btn-lg font-weight-bold m-5";
-    startBtn.id = "startGame";
-    startBtn.innerHTML = "Reset Game";
-    statusCol.id = "startGame";
+
+    ///SETTING UP RESET BUTTON
+    
+    var reset = document.createElement("button");
+    reset.addEventListener=newGame;
+    reset.className = "btn btn-secondary btn-lg font-weight-bold m-5";
+    reset.id = "resetGame";
+    reset.innerHTML = "Reset Game";
+    //   v;;statusCol.id = "startGame";
     statusCol.className = "col-4 border";
+
     let statusCol2 = document.createElement("div");
     statusCol2.className = "col-4 border";
+    let card2 = document.createElement("div");
+    card2.className="card-body bg-secondary text-white text-center justify-content m-4";
+    statusCol2.className = "col-4 border font-weight-bold bg-primary";
+
     let infoBox= document.createElement("p");
-    infoBox.innerHTML="Player 1 turn!"
+    infoBox.innerHTML="Player 1 turn! <br>"
     infoBox.id="gameInfo";
     let statusCol3 = document.createElement("div");
-    statusCol3.className = "col-4 border font-weight-bold bg-secondary";
-    statusCol3.innerHTML = "Player 1: X <br> Player 2:O";
-    statusCol2.appendChild(infoBox);
-    statusCol.appendChild(startBtn);
+    let card = document.createElement("div");
+    card.className="card-body bg-secondary text-white text-center justify-content m-4";
+    statusCol3.className = "col-4 border font-weight-bold bg-primary";
+    card.innerHTML = "Player 1: X <br> Player 2:O";
+
+
+    card2.appendChild(infoBox);
+    statusCol2.appendChild(card2);
+    statusCol.appendChild(reset);
     statusRow.appendChild(statusCol);
     statusRow.appendChild(statusCol2);
     statusRow.appendChild(statusCol3);
     statusBar.appendChild(statusRow);
+    statusCol3.appendChild(card);
     document.body.appendChild(statusBar);
 }
-//startBtn.onClick= resetGame;
-/*function resetGame () {
-state=0;
-    init() 
-} */
 
+function newGame () {    //RESET STATE TO ZERO AND RUN INIT. I HAVE SOMETHING WRONG HERE.
+    state=0;
 
-
-/* let btn = document.createElement("button");  //set variable container for new div created.
-btn.innerHTML="Start Game"; //
-btn.className=" h1 text-center bg-primary"; //center HTML text */
+    init() ;
+} 
 
 
 
 
-
-
-
-
-
-/* Create startBtn
- set up startBtn id */
 
 
