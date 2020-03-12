@@ -58,45 +58,49 @@ function createBoard() {
             let column = document.createElement("div"); //create a new column through each iteration
             column.className = "col-4 border"; //sets new column class name to "column"=
             column.id = k;
-            column.addEventListener("click",clickSquare);  // assign the function to the click
-            
+            column.addEventListener("click", clickSquare);  // assign the function to the click
+
             console.log(clickSquare.useCapture);
-            
+
             row.appendChild(column); //appends child column to parent row
             k++;
-        
-           
+
+
         }
-       
+
         container.appendChild(row);    //appends child row to parent container.
     }
+    
     document.body.appendChild(container);  //appends container to parent body.
 }
 
 
-
 function clickSquare(e) {
-    // passes the event as e, automatically for any event 
-    console.log(e.target.id);  //event target id is the id of the square
-    /*when square click, If Player 1 clicks, print X | If Player 2 clicks, 
-    print O to occupy square space and space becomes locked. */
-    turn = !turn;
-    console.log(turn);
-    clicks++;  // adding the clicks
-    e.target.innerHTML = turns[Number(turn)]; // updating the view
-    e.target.removeEventListener("click", clickSquare); 
-     //I need to make square unclickable after click. e.target false? 
-     
+    if (condition === null) {
+        // passes the event as e, automatically for any event 
+        console.log(e.target.id);  //event target id is the id of the square
+        /*when square click, If Player 1 clicks, print X | If Player 2 clicks, 
+        print O to occupy square space and space becomes locked. */
+        turn = !turn;
+        console.log(turn);
+        clicks++;  // adding the clicks
+        e.target.innerHTML = turns[Number(turn)]; // updating the view
+        e.target.removeEventListener("click", clickSquare);
+        //I need to make square unclickable after click. e.target false? 
 
-    //how do I store each click in my state? store clicks into an array. 
-    clickData[e.target.id] = Number(turn) + 1; // setting the state of the clickData
-     if (clicks % 2 === 0){
-       gameInfo.innerText="Player 1 turn!"
-     }
-     else gameInfo.innerText="Player 2 turn!"
-    // determine if there is a winner
-    checkForWinner();
+
+        //how do I store each click in my state? store clicks into an array. 
+        clickData[e.target.id] = Number(turn) + 1; // setting the state of the clickData
+        if (clicks % 2 === 0) {
+            gameInfo.innerText = "Player 1 turn!"
+        }
+        else gameInfo.innerText = "Player 2 turn!"
+        // determine if there is a winner
+        checkForWinner();
+    }
 }
+
+var condition = null;
 
 function checkForWinner() {
     /* check through winning array possibilities.
@@ -109,7 +113,6 @@ function checkForWinner() {
     // if all of the values total 6, 0 wins
 
     //if num of clicks == 8 and no winners, it is a draw
-    var condition = null;
     for (var i = 0; i < gameWinners.length; i++) {
 
         var pos1 = gameWinners[i][0]; // 0
@@ -124,28 +127,28 @@ function checkForWinner() {
             // we have a potential win
             var total = val1 + val2 + val3; // if total is 3, x wins
             if (total == 3) {
-                gameInfo.innerText= "Player 1 wins!"
+                gameInfo.innerText = "Player 1 wins!"
                 condition = 1;  // x
                 console.log(gameInfo);
-                        //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
-                        turn= false
+                //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
+                turn = false
             }
 
             if (total == 6) {
-                gameInfo.innerText= "Player 2 wins!"
+                gameInfo.innerText = "Player 2 wins!"
                 condition = 2; // 0
-              console.log(gameInfo);
-              //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
-              turn =  false;
+                console.log(gameInfo);
+                //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
+                turn = false;
             }
 
         }
     }
 
     if (condition == null && clicks == 9) {
-        gameInfo.innerText= "Tie game!"  // we have a tie
-        
-        turn= false
+        gameInfo.innerText = "Tie game!"  // we have a tie
+        condition = 0;
+        turn = false
     }
 }
 
@@ -154,55 +157,73 @@ function checkForWinner() {
 function createStatusBar() {
     let statusBar = document.createElement("div");  //set variable container for new div created.
     statusBar.id = "statusBar"; //set id to container
-    statusBar.className = "container col-12 bg-primary mt-4 justify-content-center text-center";
+    statusBar.className = "container col-12 bg-primary mt-4 justify-content-center";
     let statusRow = document.createElement("div");
     statusRow.className = "row ";
-    let statusCol = document.createElement("div");
 
-    ///SETTING UP RESET BUTTON
-    
+
+    ///BUTTON-CARD-COLUMN-ROW 
+    let statusCol1 = document.createElement("div");
+    statusCol1.className = "col-12 col-sm-4 border";
+    let btnCard = document.createElement("div");
+    btnCard.className = "card-body bg-secondary text-white text-center m-auto";
     var reset = document.createElement("button");
-    reset.addEventListener=newGame;
-    reset.className = "btn btn-secondary btn-lg font-weight-bold m-5";
-    reset.id = "resetGame";
+    reset.addEventListener("click", resetGame);
+    reset.className = "btn btn-secondary m-auto";
     reset.innerHTML = "Reset Game";
-    //   v;;statusCol.id = "startGame";
-    statusCol.className = "col-4 border";
+    reset.id = "resetGame";
+
+
+
 
     let statusCol2 = document.createElement("div");
-    statusCol2.className = "col-4 border";
+    //statusCol2.className = "col-12 col-sm-4 border";
     let card2 = document.createElement("div");
-    card2.className="card-body bg-secondary text-white text-center justify-content m-4";
-    statusCol2.className = "col-4 border font-weight-bold bg-primary";
+    card2.className = "card-body bg-secondary text-white text-center m-auto";
+    statusCol2.className = "col-12 col-sm-4 border font-weight-bold bg-primary";
 
-    let infoBox= document.createElement("p");
-    infoBox.innerHTML="Player 1 turn! <br>"
-    infoBox.id="gameInfo";
+
+    let infoBox = document.createElement("p");
+    infoBox.innerHTML = "Player 1 turn!"
+    infoBox.id = "gameInfo";
     let statusCol3 = document.createElement("div");
     let card = document.createElement("div");
-    card.className="card-body bg-secondary text-white text-center justify-content m-4";
-    statusCol3.className = "col-4 border font-weight-bold bg-primary";
+    card.className = "card-body bg-secondary text-white text-center m-auto";
+    statusCol3.className = "col-12 col-sm-4  border font-weight-bold bg-primary";
     card.innerHTML = "Player 1: X <br> Player 2:O";
 
+    ///Reset Button-Card-Column1-Row
+    btnCard.appendChild(reset);
+    statusCol1.appendChild(btnCard);
+    statusRow.appendChild(statusCol1);
 
+
+    //infoBox-Card2-Col2-Row
     card2.appendChild(infoBox);
     statusCol2.appendChild(card2);
-    statusCol.appendChild(reset);
-    statusRow.appendChild(statusCol);
     statusRow.appendChild(statusCol2);
-    statusRow.appendChild(statusCol3);
-    statusBar.appendChild(statusRow);
+
+    //Card-Column3-Row 
     statusCol3.appendChild(card);
+    statusRow.appendChild(statusCol3);
+
+
+    //Row-statusBar-Body
+    statusBar.appendChild(statusRow);
     document.body.appendChild(statusBar);
 }
 
-function newGame () {    //RESET STATE TO ZERO AND RUN INIT. I HAVE SOMETHING WRONG HERE.
-    state=0;
+function resetGame() {    //RESET STATE TO ZERO AND RUN INIT. I HAVE SOMETHING WRONG HERE.
+    state = 0;
+    turn = true;
+    clicks = 0;
+    clickData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    document.body.innerHTML = "";
 
-    init() ;
-} 
+    init();
+}
 
-
+init();
 
 
 

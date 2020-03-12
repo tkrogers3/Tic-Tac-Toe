@@ -1,8 +1,68 @@
+ 
+/*Reset Button{
+
+   What does it need to do?
+
+it needs to call the resetGame function on click{
+
+
+
+   reset.addEventListener("click", newGame);
+}
+   It needs to reset the initial variables {
+
+var state = 0;
+var turn = true;
+var clicks = 0;
+var clickData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+ }
+
+ It needs to build the UI 
+ function init() {
+    createTitle();
+    createBoard();
+    createStatusBar();
+ }
+}
+*/
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  */ Steps to creating a good product
 
 
 Initialization -
-0. Set State . What is the default layout?
+1. Set State . What is the default layout?
 
 [
 0.1- Title {
