@@ -1,11 +1,5 @@
 
-/*function build(elements, class, id, htmlText){
-    let element=document.getElement(elements);
-     element.className= class;
-     element.id= id;
-     element.innerHTML=htmlText;
-return element;
-} */
+//global variables
 var state = 0;
 var turn = true;
 var clicks = 0;
@@ -47,8 +41,7 @@ function createBoard() {
     container.id = "container"; //set id to container
     container.className = "container col-12 bg-secondary text-center font-weight-bold display-2"; // sets bootstrap class name to container
 
-    /* pseudo code create rows and columns 
-    1 row with 3 columns  */
+    /* pseudo code create rows and columns- 1 row with 3 columns  */
     var k = 0;
     for (var i = 0; i < 3; i++) {          //for loop to create 3 rows
         let row = document.createElement("div");    //create a new row through each iteration 
@@ -57,10 +50,10 @@ function createBoard() {
         for (var j = 0; j < 3; j++) {            //for loop to create 3 columns
             let column = document.createElement("div"); //create a new column through each iteration
             column.className = "col-4 border"; //sets new column class name to "column"=
-            column.id = k;
-            column.addEventListener("click", clickSquare);  // assign the function to the click
+            column.id = k;   //setting id for each  column
+            column.addEventListener("click", clickSquare);  // adds a listener to the function for the click
 
-            console.log(clickSquare.useCapture);
+            //console.log(clickSquare.useCapture);
 
             row.appendChild(column); //appends child column to parent row
             k++;
@@ -78,11 +71,11 @@ function createBoard() {
 function clickSquare(e) {
     if (condition === null) {
         // passes the event as e, automatically for any event 
-        console.log(e.target.id);  //event target id is the id of the square
+        //console.log(e.target.id);  //event target id is the id of the square
         /*when square click, If Player 1 clicks, print X | If Player 2 clicks, 
         print O to occupy square space and space becomes locked. */
         turn = !turn;
-        console.log(turn);
+       // console.log(turn);
         clicks++;  // adding the clicks
         e.target.innerHTML = turns[Number(turn)]; // updating the view
         e.target.removeEventListener("click", clickSquare);
@@ -129,7 +122,7 @@ function checkForWinner() {
             if (total == 3) {
                 gameInfo.innerText = "Player 1 wins!"
                 condition = 1;  // x
-                console.log(gameInfo);
+                //console.log(gameInfo);
                 //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
                 turn = false
             }
@@ -137,7 +130,7 @@ function checkForWinner() {
             if (total == 6) {
                 gameInfo.innerText = "Player 2 wins!"
                 condition = 2; // 0
-                console.log(gameInfo);
+                //console.log(gameInfo);
                 //GAME IS OVER. NO CLICKS SHOULD BE POSSIBLE. I'm missing something.
                 turn = false;
             }
@@ -218,8 +211,9 @@ function resetGame() {    //RESET STATE TO ZERO AND RUN INIT. I HAVE SOMETHING W
     turn = true;
     clicks = 0;
     clickData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var turns = ["X", "0"];
     document.body.innerHTML = "";
-
+ condition = null;
     init();
 }
 
